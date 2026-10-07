@@ -1,0 +1,112 @@
+@model tjk.Models.ProductItem
+@{
+    ViewData["Title"] = Model.Name;
+    var relatedProducts = ViewBag.RelatedProducts as List<tjk.Models.ProductItem> ?? new();
+}
+
+<div class="tjk-page-header">
+    <div class="container-fluid px-lg-5">
+        <div class="small text-uppercase fw-bold text-muted mb-2">
+            <a asp-controller="Home" asp-action="Products" class="text-white-50 text-decoration-none">КАТАЛОГ</a> / 
+            <span class="text-white">@Model.CategoryName</span>
+        </div>
+        <h1 class="display-6 fw-bold text-uppercase mb-0">@Model.Name</h1>
+    </div>
+</div>
+
+<div class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        <div class="row g-5">
+            <!-- Machine Image & Action -->
+            <div class="col-lg-6">
+                <div class="position-relative mb-4">
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="w-100 shadow" style="aspect-ratio: 16/11; object-fit: cover;" />
+                    @if (!string.IsNullOrEmpty(Model.Badge))
+                    {
+                        <span class="tjk-card-badge">@Model.Badge</span>
+                    }
+                </div>
+
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <h5 class="fw-bold text-uppercase text-white mb-2">ЗАПИТВАНЕ ЗА ТОЗИ МОДЕЛ</h5>
+                    <p class="text-muted small mb-4">Изпратете ни запитване за технически спецификации, конфигурация и цена.</p>
+                    <a asp-controller="Home" asp-action="Contact" asp-route-product="@Model.Name" class="btn-tjk-primary w-100 justify-content-center">
+                        ИЗПРАТИ ЗАПИТВАНЕ ЗА ОФЕРТА
+                    </a>
+                </div>
+            </div>
+
+            <!-- Specs & Description -->
+            <div class="col-lg-6">
+                <div class="tjk-eyebrow">@Model.CategoryName</div>
+                <h2 class="h2 fw-bold text-uppercase text-white mb-3">@Model.Name</h2>
+                <p class="lead fs-6 text-muted mb-4">@Model.FullDescription</p>
+
+                <!-- Key Features -->
+                @if (Model.Features.Any())
+                {
+                    <div class="mb-4">
+                        <h5 class="fw-bold text-uppercase text-white mb-3">ХАРАКТЕРИСТИКИ</h5>
+                        <ul class="list-unstyled">
+                            @foreach (var feat in Model.Features)
+                            {
+                                <li class="d-flex align-items-start mb-2 text-white-50">
+                                    <i class="bi bi-square-fill text-white me-2 mt-2" style="font-size: 0.45rem;"></i>
+                                    <span>@feat</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <!-- Specifications Table -->
+                @if (Model.Specifications.Any())
+                {
+                    <div class="mt-4">
+                        <h5 class="fw-bold text-uppercase text-white mb-3">ТЕХНИЧЕСКИ ДАННИ</h5>
+                        <table class="tjk-specs-table">
+                            <tbody>
+                                @foreach (var spec in Model.Specifications)
+                                {
+                                    <tr>
+                                        <th>@spec.Key</th>
+                                        <td>@spec.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Related Machines -->
+        @if (relatedProducts.Any())
+        {
+            <div class="mt-5 pt-5 border-top border-secondary border-opacity-25">
+                <h3 class="tjk-section-title h4 mb-4">ДРУГИ МОДЕЛИ В ТАЗИ КАТЕГОРИЯ</h3>
+                <div class="row g-4">
+                    @foreach (var rel in relatedProducts)
+                    {
+                        <div class="col-md-4">
+                            <div class="tjk-card p-3">
+                                <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@rel.Slug">
+                                    <img src="@rel.ImageUrl" alt="@rel.Name" class="tjk-card-img mb-3" />
+                                </a>
+                                <h4 class="h6 mb-2 fw-bold text-uppercase">
+                                    <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@rel.Slug" class="text-white">
+                                        @rel.Name
+                                    </a>
+                                </h4>
+                                <p class="text-muted small mb-3">@rel.ShortDescription</p>
+                                <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@rel.Slug" class="btn-tjk-primary btn-sm w-100 justify-content-center">
+                                    СПЕЦИФИКАЦИЯ
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

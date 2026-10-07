@@ -1,0 +1,75 @@
+@model tjk.Models.ContactFormViewModel
+@{
+    ViewData["Title"] = "Контакти и запитване";
+}
+
+<div class="tjk-page-header">
+    <div class="container-fluid px-lg-5">
+        <div class="small text-uppercase fw-bold text-muted mb-2">ВРЪЗКА С НАС</div>
+        <h1 class="display-6 fw-bold text-uppercase mb-0">КОНТАКТИ & ЗАПИТВАНЕ</h1>
+    </div>
+</div>
+
+<div class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        <div class="row g-5 justify-content-center">
+            <div class="col-lg-8">
+                @if (Model.SubmittedSuccessfully)
+                {
+                    <div class="p-4 mb-4" style="background-color: var(--tjk-surface); border-left: 4px solid var(--tjk-accent) !important;">
+                        <h4 class="fw-bold text-uppercase text-white mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Запитването е изпратено успешно</h4>
+                        <p class="mb-0 text-white-50">Благодарим ви! Нашият екип ще се свърже с вас възможно най-скоро.</p>
+                    </div>
+                }
+
+                <div class="p-4 p-md-5" style="background-color: var(--tjk-surface);">
+                    <h3 class="h4 fw-bold text-uppercase text-white mb-2">ИЗПРАТЕТЕ ЗАПИТВАНЕ</h3>
+                    <p class="text-muted small mb-4">
+                        Попълнете формата по-долу за информация за конкретен модел машина, технически параметри или оферта.
+                    </p>
+
+                    <form asp-controller="Home" asp-action="Contact" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Name" class="form-label small text-uppercase fw-bold text-white">Вашето име *</label>
+                                <input asp-for="Name" class="form-control tjk-form-control" placeholder="Име и фамилия" required />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label small text-uppercase fw-bold text-white">Имейл адрес *</label>
+                                <input asp-for="Email" type="email" class="form-control tjk-form-control" placeholder="name@company.com" required />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Phone" class="form-label small text-uppercase fw-bold text-white">Телефон за връзка *</label>
+                                <input asp-for="Phone" class="form-control tjk-form-control" placeholder="+359 ..." required />
+                                <span asp-validation-for="Phone" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="SelectedProduct" class="form-label small text-uppercase fw-bold text-white">Модел или вид машина</label>
+                                <input asp-for="SelectedProduct" class="form-control tjk-form-control" placeholder="Напр. WG12, Shear Line, Робот..." />
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Message" class="form-label small text-uppercase fw-bold text-white">Вашето съобщение *</label>
+                                <textarea asp-for="Message" rows="5" class="form-control tjk-form-control" placeholder="Опишете вашите изисквания, нужни капацитети или въпроси..." required></textarea>
+                                <span asp-validation-for="Message" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12 pt-2">
+                                <button type="submit" class="btn-tjk-primary w-100 justify-content-center py-3">
+                                    ИЗПРАТИ ЗАПИТВАНЕ
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

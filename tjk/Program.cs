@@ -8,6 +8,8 @@ namespace tjk
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<tjk.Services.IProductService, tjk.Services.ProductService>();
+            builder.Services.Configure<tjk.Models.CompanySettings>(builder.Configuration.GetSection("CompanySettings"));
 
             var app = builder.Build();
 
@@ -17,9 +19,9 @@ namespace tjk
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

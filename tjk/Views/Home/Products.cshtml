@@ -1,0 +1,107 @@
+@model List<tjk.Models.ProductItem>
+@{
+    ViewData["Title"] = ViewBag.SelectedCategoryName + " - Каталог";
+    var categories = ViewBag.Categories as List<tjk.Models.CategoryItem> ?? new();
+    string selectedSlug = ViewBag.SelectedCategorySlug as string ?? "";
+}
+
+<div class="tjk-page-header">
+    <div class="container-fluid px-lg-5">
+        <div class="small text-uppercase fw-bold text-muted mb-2">КАТАЛОГ МАШИНИ</div>
+        <h1 class="display-6 fw-bold text-uppercase mb-0">@ViewBag.SelectedCategoryName</h1>
+    </div>
+</div>
+
+<div class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        <div class="row g-5">
+            <!-- Sidebar Navigation (Strict Black & White) -->
+            <div class="col-lg-3">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <h5 class="text-uppercase fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25">КАТЕГОРИИ</h5>
+                    <div class="d-flex flex-column gap-2">
+                        <a asp-controller="Home" asp-action="Products" class="p-2 text-uppercase fw-bold small text-decoration-none @(string.IsNullOrEmpty(selectedSlug) ? "bg-white text-black" : "text-white")" style="@(string.IsNullOrEmpty(selectedSlug) ? "" : "background-color: var(--tjk-surface);")">
+                            ВСИЧКИ КАТЕГОРИИ
+                        </a>
+                        @foreach (var cat in categories)
+                        {
+                            <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="p-2 text-uppercase fw-bold small text-decoration-none @(selectedSlug == cat.Slug ? "bg-white text-black" : "text-white")" style="@(selectedSlug == cat.Slug ? "" : "background-color: var(--tjk-surface);")">
+                                @cat.Name
+                            </a>
+                        }
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
+                        <div class="fw-bold text-uppercase small mb-2 text-white">ИМАТЕ ВЪПРОС?</div>
+                        <p class="text-muted small mb-3">Изпратете запитване за технически спецификации и консултация.</p>
+                        <a asp-controller="Home" asp-action="Contact" class="btn-tjk-outline w-100 justify-content-center">
+                            ЗАПИТВАНЕ
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid (Strict No Borders, Flat Dark Cards, Square) -->
+            <div class="col-lg-9">
+                @if (!Model.Any())
+                {
+                    <div class="p-5 text-center" style="background-color: var(--tjk-surface-card);">
+                        <h4 class="text-uppercase fw-bold text-white">Няма намерени машини</h4>
+                        <p class="text-muted mb-4">В момента няма въведени модели в тази категория.</p>
+                        <a asp-controller="Home" asp-action="Products" class="btn-tjk-primary">ВИЖ ВСИЧКИ МАШИНИ</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="row g-4">
+                        @foreach (var prod in Model)
+                        {
+                            <div class="col-md-6">
+                                <div class="tjk-card p-3">
+                                    <div class="position-relative mb-3">
+                                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug">
+                                            <img src="@prod.ImageUrl" alt="@prod.Name" class="tjk-card-img" />
+                                        </a>
+                                        @if (!string.IsNullOrEmpty(prod.Badge))
+                                        {
+                                            <span class="tjk-card-badge">@prod.Badge</span>
+                                        }
+                                    </div>
+                                    <div class="small text-uppercase fw-bold text-muted mb-1">@prod.CategoryName</div>
+                                    <h3 class="h5 mb-2 fw-bold text-uppercase">
+                                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" class="text-white">
+                                            @prod.Name
+                                        </a>
+                                    </h3>
+                                    <p class="text-muted small mb-3 flex-grow-1">@prod.ShortDescription</p>
+
+                                    @if (prod.Specifications.Any())
+                                    {
+                                        <div class="p-2 mb-3 small" style="background-color: var(--tjk-surface);">
+                                            @foreach (var spec in prod.Specifications.Take(2))
+                                            {
+                                                <div class="d-flex justify-content-between text-muted py-1 border-bottom border-secondary border-opacity-10">
+                                                    <span class="text-uppercase fw-bold text-white-50" style="font-size: 0.78rem;">@spec.Key:</span>
+                                                    <span class="text-white fw-bold">@spec.Value</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+
+                                    <div class="d-flex gap-2 mt-auto pt-2">
+                                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" class="btn-tjk-primary flex-grow-1 justify-content-center">
+                                            СПЕЦИФИКАЦИЯ
+                                        </a>
+                                        <a asp-controller="Home" asp-action="Contact" asp-route-product="@prod.Name" class="btn-tjk-outline">
+                                            ОФЕРТА
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

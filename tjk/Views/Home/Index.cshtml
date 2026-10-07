@@ -1,8 +1,132 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Индустриални машини за арматура";
+    var categories = ViewBag.Categories as List<tjk.Models.CategoryItem> ?? new();
+    var featuredProducts = ViewBag.FeaturedProducts as List<tjk.Models.ProductItem> ?? new();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Banner (Strict Two-Colour: Black & White) -->
+<section class="tjk-hero-banner">
+    <div class="container-fluid px-lg-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="tjk-eyebrow">TJK DELTA</div>
+                <h1 class="tjk-hero-headline">
+                    ИНДУСТРИАЛНИ МАШИНИ ЗА АРМАТУРА.
+                </h1>
+                <p class="tjk-hero-subtitle">
+                    Автоматизирани системи с висока производителност за обработка на стомана, огъване, рязане и заваряване.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Home" asp-action="Products" class="btn-tjk-primary">
+                        КАТАЛОГ МАШИНИ
+                    </a>
+                    <a asp-controller="Home" asp-action="Contact" class="btn-tjk-outline">
+                        СВЪРЖИ СЕ С НАС
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="https://tjkserecon.s3.eu-central-1.amazonaws.com/wp-content/uploads/2025/07/26153800/Estribadora-WG12-1A-660x440.jpg" alt="TJK WG12" class="w-100 shadow" style="aspect-ratio: 16/10; object-fit: cover;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section (Strict Flat Grid, No Borders, Square) -->
+<section class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        <div class="mb-5">
+            <div class="tjk-eyebrow">КАТЕГОРИИ</div>
+            <h2 class="tjk-section-title">ОБОРУДВАНЕ ЗА АРМАТУРНИ ДВОРОВЕ</h2>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var cat in categories)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="tjk-card">
+                        <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="d-block overflow-hidden">
+                            <img src="@cat.ImageUrl" alt="@cat.Name" class="tjk-card-img" />
+                        </a>
+                        <div class="tjk-card-body">
+                            <h3 class="h5 mb-2 text-uppercase fw-bold">
+                                <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="text-white">
+                                    @cat.Name
+                                </a>
+                            </h3>
+                            <p class="text-muted small mb-3 flex-grow-1">@cat.Description</p>
+                            <div>
+                                <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="fw-bold text-uppercase small text-white">
+                                    РАЗГЛЕДАЙ МОДЕЛИ <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Machines Section (Pure Black Surface) -->
+<section class="tjk-section-alt">
+    <div class="container-fluid px-lg-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-5">
+            <div>
+                <div class="tjk-eyebrow">ПРЕПОРЪЧАНИ МОДЕЛИ</div>
+                <h2 class="tjk-section-title mb-0">ИЗБРАНИ МАШИНИ</h2>
+            </div>
+            <a asp-controller="Home" asp-action="Products" class="btn-tjk-outline mt-3 mt-md-0">
+                ВСИЧКИ МАШИНИ
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var prod in featuredProducts)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="tjk-card p-3">
+                        <div class="position-relative mb-3">
+                            <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug">
+                                <img src="@prod.ImageUrl" alt="@prod.Name" class="tjk-card-img" />
+                            </a>
+                            @if (!string.IsNullOrEmpty(prod.Badge))
+                            {
+                                <span class="tjk-card-badge">@prod.Badge</span>
+                            }
+                        </div>
+                        <div class="small text-uppercase fw-bold text-muted mb-1">@prod.CategoryName</div>
+                        <h4 class="h6 mb-2 fw-bold text-uppercase">
+                            <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" class="text-white">
+                                @prod.Name
+                            </a>
+                        </h4>
+                        <p class="text-muted small mb-3 flex-grow-1">@prod.ShortDescription</p>
+                        
+                        <div class="pt-3 border-top border-secondary border-opacity-25 mt-auto">
+                            <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" class="btn-tjk-primary w-100 justify-content-center">
+                                СПЕЦИФИКАЦИЯ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Simple CTA Section -->
+<section class="tjk-section text-center">
+    <div class="container" style="max-width: 750px;">
+        <h2 class="tjk-section-title mb-3">ЗАПИТВАНЕ ЗА МАШИНА</h2>
+        <p class="text-muted mb-4">
+            Свържете се с нас за техническа информация, параметри или ценова оферта за индустриално оборудване TJK.
+        </p>
+        <a asp-controller="Home" asp-action="Contact" class="btn-tjk-primary btn-lg">
+            ИЗПРАТИ ЗАПИТВАНЕ
+        </a>
+    </div>
+</section>
