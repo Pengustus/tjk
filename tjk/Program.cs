@@ -53,6 +53,11 @@ namespace tjk
                     if (!Path.IsPathRooted(dataSource))
                     {
                         var fullPath = Path.Combine(builder.Environment.ContentRootPath, dataSource);
+                        var dir = Path.GetDirectoryName(fullPath);
+                        if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                        {
+                            Directory.CreateDirectory(dir);
+                        }
                         sqliteConn = $"Data Source={fullPath}";
                     }
                 }

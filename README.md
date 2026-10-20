@@ -122,8 +122,8 @@ Railway is typically the fastest setup for .NET + SQLite/MySQL:
 5. **Persistent Data Storage (For SQLite & Uploads)**:
    * To keep inquiries and uploaded images safe across code deployments:
    * Click on your service -> **"Settings"** -> scroll to **"Volumes"** -> **"Add Volume"**.
-   * Mount path: `/app` (or `/app/tjk_inquiries.db`).
-   * *(Alternative)*: You can add a 1-click **MySQL** database from Railway and set `DatabaseProvider: "MySql"` in environment variables.
+   * Mount path: `/app/data`
+   * *(Alternative)*: You can click "+ New" in Railway and add a 1-click **MySQL** database (sets up automatically without volumes).
 6. **Generate Domain**:
    * In **"Settings"** -> **"Networking"** -> Click **"Generate Domain"** to get a free `xxx.up.railway.app` URL for testing.
 
