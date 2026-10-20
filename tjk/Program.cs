@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using tjk.Data;
 
 namespace tjk
@@ -93,6 +94,18 @@ namespace tjk
             }
 
             app.UseStaticFiles();
+
+            // Serve uploaded images stored in persistent /data/uploads directory
+            var dataUploadsDir = Path.Combine(app.Environment.ContentRootPath, "data", "uploads");
+            if (!Directory.Exists(dataUploadsDir))
+            {
+                Directory.CreateDirectory(dataUploadsDir);
+            }
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(dataUploadsDir),
+                RequestPath = "/data/uploads"
+            });
 
             app.UseRouting();
 

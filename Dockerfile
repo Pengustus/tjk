@@ -27,7 +27,7 @@ EXPOSE 8080
 # Copy published binaries
 COPY --from=build /app/publish .
 
-# Set up writable data folder for SQLite if used
-RUN mkdir -p /app/data
+# Set up writable data folder for SQLite and uploads
+RUN mkdir -p /app/data/uploads
 
 ENTRYPOINT ["dotnet", "tjk.dll"]

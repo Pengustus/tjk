@@ -360,7 +360,7 @@ namespace tjk.Controllers
         {
             if (file != null && file.Length > 0)
             {
-                var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", "machines");
+                var uploadsFolder = Path.Combine(_environment.ContentRootPath, "data", "uploads");
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);
@@ -375,7 +375,7 @@ namespace tjk.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                return $"/images/machines/{safeFileName}";
+                return $"/data/uploads/{safeFileName}";
             }
 
             return !string.IsNullOrWhiteSpace(fallbackUrl) ? fallbackUrl.Trim() : "/images/logo.png";
