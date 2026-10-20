@@ -73,7 +73,7 @@ The SQLite database (`tjk_inquiries.db`) and all seed data (6 categories, 10 mac
 ### 1. Access & Authentication
 * **URL**: `/admin/login` (unauthenticated visitors to `/admin` are automatically redirected here)
 * **Default Username**: `admin`
-* **Default Password**: `admin`
+* **Default Password**: `SlavaNaXi1953?`
 
 > ⚠️ **Important for Production**: Change the password before deploying by setting the environment variable `AdminSettings__Password` in Railway/Render, or updating `AdminSettings:Password` in `appsettings.Production.json`.
 

@@ -60,7 +60,7 @@ namespace tjk.Controllers
             }
 
             var expectedUser = _configuration["AdminSettings:Username"] ?? "admin";
-            var expectedPass = _configuration["AdminSettings:Password"] ?? "admin";
+            var expectedPass = _configuration["AdminSettings:Password"] ?? "SlavaNaXi1953?";
 
             if (string.Equals(model.Username, expectedUser, StringComparison.OrdinalIgnoreCase) &&
                 model.Password == expectedPass)
