@@ -155,7 +155,7 @@ Railway is typically the fastest setup for .NET + SQLite/MySQL:
 
 ## 🌐 Custom Domain & DNS Setup
 
-Once your site is running on Railway or Render, connect your custom domain (e.g. `tjkdelta.bg` or `tjkserecon.bg`):
+Once your site is running on Railway or Render, connect your custom domain (e.g. `tjkdelta.com` or `www.tjkdelta.com`):
 
 ### 1. In Railway / Render Dashboard
 * Go to your service **Settings** -> **Custom Domains**.
@@ -177,8 +177,8 @@ Once your site is running on Railway or Render, connect your custom domain (e.g.
 
 ### 3. Update Company Settings
 In `appsettings.Production.json` or via environment variables, verify your contact details:
-* `CompanySettings__Domain`: `yourdomain.bg`
-* `CompanySettings__Email`: `office@yourdomain.bg`
+* `CompanySettings__Domain`: `tjkdelta.com`
+* `CompanySettings__Email`: `office@tjkdelta.com`
 * `CompanySettings__Phone`: `+359 2 ...`
 
 ---

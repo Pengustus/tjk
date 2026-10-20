@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin/*
 
-Sitemap: https://tjkdelta.bg/sitemap.xml
+Sitemap: https://tjkdelta.com/sitemap.xml
