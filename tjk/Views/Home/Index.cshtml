@@ -57,7 +57,7 @@
                                     @cat.Name
                                 </a>
                             </h3>
-                            <p class="text-muted small mb-3 flex-grow-1">@cat.Description</p>
+                            <p class="small mb-3 flex-grow-1" style="color: #D1D5DB;">@cat.Description</p>
                             <div>
                                 <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="fw-bold text-uppercase small text-white">
                                     РАЗГЛЕДАЙ МОДЕЛИ <i class="bi bi-arrow-right ms-1"></i>
@@ -98,13 +98,13 @@
                                 <span class="tjk-card-badge">@prod.Badge</span>
                             }
                         </div>
-                        <div class="small text-uppercase fw-bold text-muted mb-1">@prod.CategoryName</div>
+                        <div class="small text-uppercase fw-bold mb-1" style="color: #B3B7BD;">@prod.CategoryName</div>
                         <h4 class="h6 mb-2 fw-bold text-uppercase">
                             <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" class="text-white">
                                 @prod.Name
                             </a>
                         </h4>
-                        <p class="text-muted small mb-3 flex-grow-1">@prod.ShortDescription</p>
+                        <p class="small mb-3 flex-grow-1" style="color: #D1D5DB;">@prod.ShortDescription</p>
                         
                         <div class="pt-3 border-top border-secondary border-opacity-25 mt-auto">
                             <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" class="btn-tjk-primary w-100 justify-content-center">
@@ -122,7 +122,7 @@
 <section class="tjk-section text-center">
     <div class="container" style="max-width: 750px;">
         <h2 class="tjk-section-title mb-3">ЗАПИТВАНЕ ЗА МАШИНА</h2>
-        <p class="text-muted mb-4">
+        <p class="mb-4" style="color: #D1D5DB;">
             Свържете се с нас за техническа информация, параметри или ценова оферта за индустриално оборудване TJK.
         </p>
         <a asp-controller="Home" asp-action="Contact" class="btn-tjk-primary btn-lg">

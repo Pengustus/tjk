@@ -1,25 +1,34 @@
 /* TJK Delta Strict Two-Colour Industrial Black & White Design System
-   - Strict Two-Colour Palette: Pure Pitch Black (#000000) & Crisp Pure White (#FFFFFF)
+   - Strict Two-Colour Palette: Pitch Black (#000000) & Crisp Pure White (#FFFFFF)
    - Zero orange, zero blue, zero warm/cool tints
    - Strictly zero rounded edges (border-radius: 0 !important)
-   - Strictly zero unnecessary card borders (flat architectural minimalism)
+   - High Contrast readability for dark backgrounds (WCAG AAA compliant text)
    - Large prominent logo and bold stark uppercase typography
 */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
 
-:root {
+:root, [data-bs-theme="dark"] {
     --tjk-black: #000000;
-    --tjk-surface: #0A0A0A;
-    --tjk-surface-card: #121212;
-    --tjk-surface-hover: #1C1C1C;
-    --tjk-border: #262626;
-    --tjk-border-light: #333333;
+    --tjk-surface: #0E0E0E;
+    --tjk-surface-card: #161616;
+    --tjk-surface-hover: #222222;
+    --tjk-border: #2E2E2E;
+    --tjk-border-light: #444444;
 
     --tjk-white: #FFFFFF;
-    --tjk-text: #FFFFFF;
-    --tjk-text-muted: #888888;
-    --tjk-text-subtle: #CCCCCC;
+    --tjk-text: #F3F4F6;
+    --tjk-text-readable: #E5E7EB;
+    --tjk-text-muted: #B3B7BD;
+    --tjk-text-subtle: #D8DCE3;
+    --tjk-accent: #FFFFFF;
+
+    /* Bootstrap Dark Overrides */
+    --bs-body-color: #F3F4F6 !important;
+    --bs-body-bg: #000000 !important;
+    --bs-secondary-color: #B3B7BD !important;
+    --bs-tertiary-color: #8C929D !important;
+    --bs-border-color: #2E2E2E !important;
 
     --tjk-font: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -47,6 +56,34 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.01em;
 }
 
+p {
+    color: #E2E4E8;
+    line-height: 1.65;
+}
+
+.lead {
+    color: #EAECEF !important;
+    font-weight: 400;
+}
+
+/* High Contrast text helpers to avoid dark-on-dark */
+.text-muted {
+    color: var(--tjk-text-muted) !important;
+}
+
+.text-white-50 {
+    color: var(--tjk-text-subtle) !important;
+}
+
+.text-white-75 {
+    color: #E5E7EB !important;
+}
+
+.text-danger, .field-validation-error {
+    color: #FF6B6B !important;
+    font-weight: 600;
+}
+
 a {
     color: var(--tjk-white);
     text-decoration: none;
@@ -55,10 +92,42 @@ a {
 
 a:hover {
     color: var(--tjk-white);
-    opacity: 0.75;
+    opacity: 0.8;
 }
 
-/* Header & Navbar (Strict Pure Black #000000) */
+/* Fix active category button hover bug: never turn white on white */
+a.bg-white.text-black,
+a.bg-white.text-black:hover,
+a.bg-white.text-black:focus {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+
+.tjk-category-pill {
+    background-color: var(--tjk-surface);
+    color: #F3F4F6 !important;
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tjk-category-pill:hover {
+    background-color: var(--tjk-surface-hover);
+    color: #FFFFFF !important;
+}
+
+.tjk-category-pill-active,
+.tjk-category-pill-active:hover {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+/* Header & Navbar */
 .tjk-header {
     background-color: var(--tjk-black);
     border-bottom: 1px solid var(--tjk-border);
@@ -95,14 +164,14 @@ a:hover {
 }
 
 .nav-link.tjk-nav-item:hover {
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .nav-link.tjk-nav-item.active {
     border-bottom: 2px solid var(--tjk-white);
 }
 
-/* Strict Two-Colour Buttons (Pure Black & Pure White) */
+/* Buttons */
 .btn-tjk-primary {
     background-color: var(--tjk-white);
     color: var(--tjk-black) !important;
@@ -177,7 +246,7 @@ a:hover {
 
 .tjk-hero-subtitle {
     font-size: 1.25rem;
-    color: var(--tjk-text-subtle);
+    color: #E0E2E7;
     max-width: 650px;
     margin-bottom: 2.25rem;
     line-height: 1.6;
@@ -210,7 +279,7 @@ a:hover {
 }
 
 .tjk-eyebrow {
-    color: var(--tjk-text-muted);
+    color: #C0C5CC;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -218,7 +287,7 @@ a:hover {
     margin-bottom: 0.75rem;
 }
 
-/* Machine & Category Cards (Strictly No Borders, Pitch Black Surfaces) */
+/* Machine & Category Cards */
 .tjk-card {
     background-color: var(--tjk-surface-card);
     border: none !important;
@@ -249,6 +318,10 @@ a:hover {
     flex-grow: 1;
 }
 
+.tjk-card p {
+    color: #D1D5DB;
+}
+
 .tjk-card-badge {
     position: absolute;
     top: 0;
@@ -262,7 +335,7 @@ a:hover {
     padding: 0.35rem 0.75rem;
 }
 
-/* Machine Specs Table (Flat, Sharp, Pure Black & White) */
+/* Machine Specs Table */
 .tjk-specs-table {
     width: 100%;
     border-collapse: collapse;
@@ -281,40 +354,52 @@ a:hover {
 
 .tjk-specs-table th {
     font-weight: 700;
-    color: var(--tjk-white);
+    color: #E5E7EB;
     text-transform: uppercase;
     font-size: 0.85rem;
     width: 45%;
 }
 
 .tjk-specs-table td {
-    color: var(--tjk-text-subtle);
-    font-weight: 500;
+    color: #FFFFFF;
+    font-weight: 600;
 }
 
-/* Form Controls (Strictly rectangular, actual black surface) */
+/* Form Controls */
 .tjk-form-control {
-    background-color: var(--tjk-surface-card);
+    background-color: #141414 !important;
     border: 1px solid var(--tjk-border) !important;
-    color: var(--tjk-white) !important;
+    color: #FFFFFF !important;
     padding: 0.85rem 1rem;
     font-size: 0.95rem;
     border-radius: 0 !important;
 }
 
 .tjk-form-control:focus {
-    background-color: var(--tjk-surface-hover);
-    border-color: var(--tjk-white) !important;
+    background-color: #1A1A1A !important;
+    border-color: #FFFFFF !important;
     box-shadow: none !important;
     outline: none;
-    color: var(--tjk-white) !important;
+    color: #FFFFFF !important;
 }
 
 .tjk-form-control::placeholder {
-    color: var(--tjk-text-muted);
+    color: #8C929D !important;
 }
 
-/* Footer (Pitch Black #000000, Sharp) */
+/* Autofill Fix for Dark Themes */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: #FFFFFF !important;
+    -webkit-box-shadow: 0 0 0px 1000px #141414 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Footer */
 .tjk-footer {
     background-color: var(--tjk-black);
     color: var(--tjk-text-muted);
@@ -330,6 +415,11 @@ a:hover {
     letter-spacing: 1px;
 }
 
+.tjk-footer-desc {
+    color: #CCCCCC;
+    line-height: 1.6;
+}
+
 .tjk-footer-links {
     list-style: none;
     padding: 0;
@@ -341,7 +431,7 @@ a:hover {
 }
 
 .tjk-footer-links a {
-    color: var(--tjk-text-muted);
+    color: #B8BCC4;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 0.85rem;
@@ -351,12 +441,40 @@ a:hover {
 }
 
 .tjk-footer-links a:hover {
-    color: var(--tjk-white);
+    color: #FFFFFF;
+}
+
+.tjk-footer-contact {
+    color: #E2E4E8;
+    line-height: 1.8;
+}
+
+.tjk-footer-contact a {
+    color: #FFFFFF;
+    transition: opacity 0.15s ease;
+}
+
+.tjk-footer-contact a:hover {
+    opacity: 0.8;
 }
 
 .tjk-footer-bottom {
     border-top: 1px solid var(--tjk-border);
     letter-spacing: 0.5px;
+}
+
+.tjk-copyright {
+    color: #A3A8B2;
+}
+
+.tjk-legal-link {
+    color: #B8BCC4;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.tjk-legal-link:hover {
+    color: #FFFFFF;
 }
 
 /* Responsive */

@@ -29,7 +29,7 @@
 
                 <div class="p-4" style="background-color: var(--tjk-surface-card);">
                     <h5 class="fw-bold text-uppercase text-white mb-2">ЗАПИТВАНЕ ЗА ТОЗИ МОДЕЛ</h5>
-                    <p class="text-muted small mb-4">Изпратете ни запитване за технически спецификации, конфигурация и цена.</p>
+                    <p class="small mb-4" style="color: #D1D5DB;">Изпратете ни запитване за технически спецификации, конфигурация и цена.</p>
                     <a asp-controller="Home" asp-action="Contact" asp-route-product="@Model.Name" class="btn-tjk-primary w-100 justify-content-center">
                         ИЗПРАТИ ЗАПИТВАНЕ ЗА ОФЕРТА
                     </a>
@@ -40,7 +40,7 @@
             <div class="col-lg-6">
                 <div class="tjk-eyebrow">@Model.CategoryName</div>
                 <h2 class="h2 fw-bold text-uppercase text-white mb-3">@Model.Name</h2>
-                <p class="lead fs-6 text-muted mb-4">@Model.FullDescription</p>
+                <p class="lead fs-6 mb-4" style="color: #E2E4E8; line-height: 1.7;">@Model.FullDescription</p>
 
                 <!-- Key Features -->
                 @if (Model.Features.Any())
@@ -50,7 +50,7 @@
                         <ul class="list-unstyled">
                             @foreach (var feat in Model.Features)
                             {
-                                <li class="d-flex align-items-start mb-2 text-white-50">
+                                <li class="d-flex align-items-start mb-2" style="color: #E2E4E8;">
                                     <i class="bi bi-square-fill text-white me-2 mt-2" style="font-size: 0.45rem;"></i>
                                     <span>@feat</span>
                                 </li>
@@ -98,7 +98,7 @@
                                         @rel.Name
                                     </a>
                                 </h4>
-                                <p class="text-muted small mb-3">@rel.ShortDescription</p>
+                                <p class="small mb-3" style="color: #D1D5DB;">@rel.ShortDescription</p>
                                 <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@rel.Slug" class="btn-tjk-primary btn-sm w-100 justify-content-center">
                                     СПЕЦИФИКАЦИЯ
                                 </a>

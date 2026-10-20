@@ -1,0 +1,172 @@
+@model List<tjk.Models.ProductItem>
+@{
+    ViewData["Title"] = "Управление на машини & Оферти";
+    var categories = ViewBag.Categories as List<tjk.Models.CategoryItem> ?? new();
+    string selectedCat = ViewBag.SelectedCategory as string ?? "";
+    int total = ViewBag.TotalMachines ?? 0;
+    int featured = ViewBag.FeaturedMachines ?? 0;
+}
+
+<div class="tjk-page-header">
+    <div class="container-fluid px-lg-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <div class="tjk-eyebrow">АДМИНИСТРАЦИЯ</div>
+                <h1 class="display-6 fw-bold text-uppercase mb-0">УПРАВЛЕНИЕ НА МАШИНИ & ОФЕРТИ</h1>
+            </div>
+            <div class="d-flex gap-2 mt-3 mt-md-0">
+                <a asp-controller="Admin" asp-action="CreateMachine" class="btn-tjk-primary">
+                    <i class="bi bi-plus-lg me-1"></i> ДОБАВИ НОВА МАШИНА
+                </a>
+                <a asp-controller="Admin" asp-action="Logout" class="btn-tjk-outline btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i> ИЗХОД
+                </a>
+            </div>
+        </div>
+
+        <!-- Admin Subnav Tabs -->
+        <div class="d-flex gap-3 mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <a asp-controller="Admin" asp-action="Inquiries" class="text-white-50 text-decoration-none fw-bold small text-uppercase py-1">
+                <i class="bi bi-envelope me-1"></i> Запитвания (CRM)
+            </a>
+            <span class="text-secondary">|</span>
+            <a asp-controller="Admin" asp-action="Machines" class="text-white text-decoration-none fw-bold small text-uppercase py-1 border-bottom border-white">
+                <i class="bi bi-gear-wide-connected me-1"></i> Машини & Оферти (@total)
+            </a>
+            <span class="text-secondary">|</span>
+            <a asp-controller="Home" asp-action="Products" target="_blank" class="text-white-50 text-decoration-none fw-bold small text-uppercase py-1">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Публичен каталог
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="p-3 mb-4 border border-white" style="background-color: var(--tjk-surface-card);">
+                <i class="bi bi-check-circle-fill text-white me-2"></i>
+                <span class="text-white fw-bold">@TempData["SuccessMessage"]</span>
+            </div>
+        }
+
+        <!-- Stats Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <div class="small text-uppercase fw-bold text-muted mb-1">ОБЩО МАШИНИ В КАТАЛОГА</div>
+                    <div class="display-5 fw-bold text-white">@total</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <div class="small text-uppercase fw-bold text-muted mb-1">ПРЕПОРЪЧАНИ (НА НАЧАЛНА СТРАНИЦА)</div>
+                    <div class="display-5 fw-bold text-white">@featured</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <div class="small text-uppercase fw-bold text-muted mb-1">ПРОИЗВОДСТВЕНИ КАТЕГОРИИ</div>
+                    <div class="display-5 fw-bold text-white">@categories.Count</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter by Category -->
+        <div class="p-3 mb-4 d-flex flex-wrap align-items-center gap-2" style="background-color: var(--tjk-surface-card);">
+            <span class="small text-uppercase fw-bold text-white me-2"><i class="bi bi-funnel me-1"></i>Филтър по категория:</span>
+            <a asp-controller="Admin" asp-action="Machines" class="tjk-category-pill py-1 px-3 small @(string.IsNullOrEmpty(selectedCat) ? "tjk-category-pill-active" : "")">
+                Всички (@total)
+            </a>
+            @foreach (var cat in categories)
+            {
+                <a asp-controller="Admin" asp-action="Machines" asp-route-category="@cat.Id" class="tjk-category-pill py-1 px-3 small @(selectedCat == cat.Id ? "tjk-category-pill-active" : "")">
+                    @cat.Name (@cat.ProductCount)
+                </a>
+            }
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="p-5 text-center" style="background-color: var(--tjk-surface-card);">
+                <i class="bi bi-cpu fs-1 text-muted mb-3 d-block"></i>
+                <h4 class="text-uppercase fw-bold text-white mb-2">Няма намерени машини</h4>
+                <p class="mb-4" style="color: #D1D5DB;">Няма въведени машини в избраната категория.</p>
+                <a asp-controller="Admin" asp-action="CreateMachine" class="btn-tjk-primary">ДОБАВИ ПЪРВА МАШИНА</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="tjk-specs-table" style="background-color: var(--tjk-surface-card);">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--tjk-border) !important;">
+                            <th style="width: 10%;">СНИМКА</th>
+                            <th style="width: 25%;">МОДЕЛ / ИМЕ</th>
+                            <th style="width: 18%;">КАТЕГОРИЯ</th>
+                            <th style="width: 15%;">ЕТИКЕТ / БАДЖ</th>
+                            <th style="width: 12%;">НАЧАЛНА СТР.</th>
+                            <th style="width: 20%;">ДЕЙСТВИЯ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prod in Model)
+                        {
+                            <tr style="vertical-align: middle;">
+                                <td>
+                                    <img src="@prod.ImageUrl" alt="@prod.Name" style="width: 75px; aspect-ratio: 16/11; object-fit: cover; background: #000;" />
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-white">@prod.Name</div>
+                                    <div class="small" style="color: #8C929D;">slug: /product/@prod.Slug</div>
+                                </td>
+                                <td>
+                                    <div class="small text-white">@prod.CategoryName</div>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(prod.Badge))
+                                    {
+                                        <span class="badge bg-white text-black rounded-0 text-uppercase fw-bold" style="font-size: 0.72rem;">
+                                            @prod.Badge
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary small">—</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (prod.IsFeatured)
+                                    {
+                                        <span class="text-white small fw-bold"><i class="bi bi-star-fill text-white me-1"></i> Да</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-secondary small">Не</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-slug="@prod.Slug" target="_blank" class="btn btn-outline-light btn-sm rounded-0 py-1 px-2" title="Преглед на сайта">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-controller="Admin" asp-action="EditMachine" asp-route-id="@prod.Id" class="btn btn-light btn-sm rounded-0 py-1 px-3 text-black fw-bold" title="Редактирай">
+                                            <i class="bi bi-pencil-square me-1"></i> Редакция
+                                        </a>
+                                        <form asp-controller="Admin" asp-action="DeleteMachine" asp-route-id="@prod.Id" method="post" onsubmit="return confirm('Сигурни ли сте, че искате да премахнете машина \'@prod.Name\' от каталога?');" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-0 py-1 px-2" title="Изтрий машина">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

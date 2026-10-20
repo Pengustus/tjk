@@ -1,0 +1,209 @@
+@model List<tjk.Models.Inquiry>
+@{
+    ViewData["Title"] = "Запитвания за оферти (CRM)";
+    int total = ViewBag.TotalCount ?? 0;
+    int newCount = ViewBag.NewCount ?? 0;
+    string selectedStatus = ViewBag.SelectedStatus as string ?? "";
+}
+
+<div class="tjk-page-header">
+    <div class="container-fluid px-lg-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <div class="tjk-eyebrow">АДМИНИСТРАЦИЯ</div>
+                <h1 class="display-6 fw-bold text-uppercase mb-0">ЗАПИТВАНИЯ ЗА ОФЕРТИ (CRM)</h1>
+            </div>
+            <div class="d-flex gap-2 mt-3 mt-md-0">
+                <a asp-controller="Home" asp-action="Contact" target="_blank" class="btn-tjk-outline btn-sm">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> ТЕСТВАЙ ФОРМАТА
+                </a>
+                <a asp-controller="Admin" asp-action="Logout" class="btn-tjk-outline btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i> ИЗХОД
+                </a>
+            </div>
+        </div>
+
+        <!-- Admin Subnav Tabs -->
+        <div class="d-flex flex-wrap gap-3 mt-4 pt-3 border-top border-secondary border-opacity-25 align-items-center">
+            <a asp-controller="Admin" asp-action="Inquiries" class="text-white text-decoration-none fw-bold small text-uppercase py-1 border-bottom border-white">
+                <i class="bi bi-envelope me-1"></i> Запитвания (CRM) (@total)
+            </a>
+            <span class="text-secondary">|</span>
+            <a asp-controller="Admin" asp-action="Machines" class="text-white-50 text-decoration-none fw-bold small text-uppercase py-1">
+                <i class="bi bi-gear-wide-connected me-1"></i> Машини & Оферти
+            </a>
+            <span class="text-secondary">|</span>
+            <a asp-controller="Home" asp-action="Products" target="_blank" class="text-white-50 text-decoration-none fw-bold small text-uppercase py-1">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Публичен каталог
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="p-3 mb-4 border border-white" style="background-color: var(--tjk-surface-card);">
+                <i class="bi bi-check-circle-fill text-white me-2"></i>
+                <span class="text-white fw-bold">@TempData["SuccessMessage"]</span>
+            </div>
+        }
+
+        <!-- Stats Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <div class="small text-uppercase fw-bold text-muted mb-1">ОБЩО ЗАПИТВАНИЯ</div>
+                    <div class="display-5 fw-bold text-white">@total</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <div class="small text-uppercase fw-bold text-muted mb-1">НОВИ (НЕОТРАБОТЕНИ)</div>
+                    <div class="display-5 fw-bold @(newCount > 0 ? "text-white" : "text-muted")">@newCount</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4" style="background-color: var(--tjk-surface-card);">
+                    <div class="small text-uppercase fw-bold text-muted mb-1">СЪСТОЯНИЕ НА БАЗАТА ДАННИ</div>
+                    <div class="h5 fw-bold text-white mb-0 mt-2">
+                        <i class="bi bi-database-check me-2 text-white"></i> АКТИВНА
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a asp-controller="Admin" asp-action="Inquiries" class="btn btn-sm rounded-0 @(string.IsNullOrEmpty(selectedStatus) ? "btn-light text-black fw-bold" : "btn-outline-secondary text-white")">
+                Всички (@total)
+            </a>
+            <a asp-controller="Admin" asp-action="Inquiries" asp-route-status="Ново" class="btn btn-sm rounded-0 @(selectedStatus == "Ново" ? "btn-light text-black fw-bold" : "btn-outline-secondary text-white")">
+                Ново
+            </a>
+            <a asp-controller="Admin" asp-action="Inquiries" asp-route-status="В процес" class="btn btn-sm rounded-0 @(selectedStatus == "В процес" ? "btn-light text-black fw-bold" : "btn-outline-secondary text-white")">
+                В процес
+            </a>
+            <a asp-controller="Admin" asp-action="Inquiries" asp-route-status="Прегледано" class="btn btn-sm rounded-0 @(selectedStatus == "Прегледано" ? "btn-light text-black fw-bold" : "btn-outline-secondary text-white")">
+                Прегледано
+            </a>
+            <a asp-controller="Admin" asp-action="Inquiries" asp-route-status="Приключено" class="btn btn-sm rounded-0 @(selectedStatus == "Приключено" ? "btn-light text-black fw-bold" : "btn-outline-secondary text-white")">
+                Приключено
+            </a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="p-5 text-center" style="background-color: var(--tjk-surface-card);">
+                <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+                <h4 class="text-uppercase fw-bold text-white mb-2">Няма получени запитвания</h4>
+                <p class="mb-4" style="color: #D1D5DB;">Когато клиенти попълнят формата за запитване в сайта, техните данни ще се появят тук в реално време.</p>
+                <a asp-controller="Home" asp-action="Contact" target="_blank" class="btn-tjk-primary">ИЗПРАТИ ТЕСТОВО ЗАПИТВАНЕ</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="tjk-specs-table" style="background-color: var(--tjk-surface-card);">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--tjk-border) !important;">
+                            <th style="width: 14%;">ДАТА & ЧАС</th>
+                            <th style="width: 20%;">КЛИЕНТ & ФИРМА</th>
+                            <th style="width: 18%;">КОНТАКТИ</th>
+                            <th style="width: 16%;">МАШИНА / МОДЕЛ</th>
+                            <th style="width: 22%;">СЪОБЩЕНИЕ & БЕЛЕЖКИ</th>
+                            <th style="width: 10%;">ДЕЙСТВИЯ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="vertical-align: top;">
+                                <td>
+                                    <div class="fw-bold text-white">@item.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                                    <span class="badge @(item.Status == "Ново" ? "bg-white text-black" : "bg-dark border border-secondary text-white") rounded-0 text-uppercase mt-1" style="font-size: 0.72rem;">
+                                        @item.Status
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-white">@item.Name</div>
+                                    @if (!string.IsNullOrEmpty(item.Company))
+                                    {
+                                        <div class="small" style="color: #B3B7BD;"><i class="bi bi-building me-1"></i>@item.Company</div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.IpAddress))
+                                    {
+                                        <div class="small text-muted" style="font-size: 0.7rem;"><i class="bi bi-globe me-1"></i>@item.IpAddress</div>
+                                    }
+                                </td>
+                                <td>
+                                    <div>
+                                        <a href="tel:@item.Phone" class="text-white text-decoration-none fw-bold small">
+                                            <i class="bi bi-telephone-fill me-1"></i>@item.Phone
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href="mailto:@item.Email" class="text-white text-decoration-none small" style="color: #D1D5DB !important;">
+                                            <i class="bi bi-envelope-fill me-1"></i>@item.Email
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.SelectedProduct))
+                                    {
+                                        <span class="badge bg-white text-black rounded-0 text-uppercase fw-bold" style="font-size: 0.75rem;">
+                                            @item.SelectedProduct
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="small" style="color: #8C929D;">Общо запитване</span>
+                                    }
+                                </td>
+                                <td>
+                                    <p class="small mb-2" style="color: #E2E4E8; white-space: pre-wrap;">@item.Message</p>
+
+                                    <!-- Internal Admin Notes Form -->
+                                    <div class="p-2 border border-secondary border-opacity-25" style="background-color: rgba(255,255,255,0.03);">
+                                        <div class="small fw-bold text-uppercase text-muted mb-1" style="font-size: 0.68rem;">
+                                            <i class="bi bi-journal-text me-1"></i>Вътрешни бележки (CRM)
+                                        </div>
+                                        <form asp-controller="Admin" asp-action="UpdateNotes" asp-route-id="@item.Id" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <textarea name="notes" rows="2" class="form-control form-control-sm rounded-0 bg-black text-white border-secondary border-opacity-50 small mb-1" placeholder="Добавете бележка (напр. 'Изпратена оферта')...">@item.AdminNotes</textarea>
+                                            <button type="submit" class="btn btn-outline-light btn-sm rounded-0 py-0 px-2" style="font-size: 0.7rem;">
+                                                <i class="bi bi-save me-1"></i>Запази бележка
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column gap-2">
+                                        <form asp-controller="Admin" asp-action="UpdateStatus" asp-route-id="@item.Id" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <label class="small text-muted" style="font-size: 0.68rem;">Статус:</label>
+                                            <select name="status" onchange="this.form.submit()" class="form-select form-select-sm rounded-0 bg-black text-white border-secondary border-opacity-50" style="font-size: 0.75rem;">
+                                                <option value="Ново" selected="@(item.Status == "Ново")">Ново</option>
+                                                <option value="В процес" selected="@(item.Status == "В процес")">В процес</option>
+                                                <option value="Прегледано" selected="@(item.Status == "Прегледано")">Прегледано</option>
+                                                <option value="Приключено" selected="@(item.Status == "Приключено")">Приключено</option>
+                                            </select>
+                                        </form>
+
+                                        <form asp-controller="Admin" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Сигурни ли сте, че искате да изтриете това запитване?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-0 w-100 py-1" style="font-size: 0.72rem;">
+                                                <i class="bi bi-trash"></i> Изтрий
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

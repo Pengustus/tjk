@@ -5,27 +5,87 @@
 
 <div class="tjk-page-header">
     <div class="container-fluid px-lg-5">
-        <div class="small text-uppercase fw-bold text-muted mb-2">ВРЪЗКА С НАС</div>
+        <div class="tjk-eyebrow">ВРЪЗКА С НАС</div>
         <h1 class="display-6 fw-bold text-uppercase mb-0">КОНТАКТИ & ЗАПИТВАНЕ</h1>
     </div>
 </div>
 
 <div class="tjk-section">
     <div class="container-fluid px-lg-5">
-        <div class="row g-5 justify-content-center">
-            <div class="col-lg-8">
+        <div class="row g-5">
+            <!-- Company Information Column -->
+            <div class="col-lg-5">
+                <div class="p-4 p-md-5 h-100" style="background-color: var(--tjk-surface-card);">
+                    <div class="tjk-eyebrow">ПРЕДСТАВИТЕЛСТВО ЗА БЪЛГАРИЯ</div>
+                    <h2 class="h3 fw-bold text-uppercase text-white mb-4">TJK DELTA BULGARIA</h2>
+
+                    <div class="d-flex flex-column gap-4 mb-5">
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-geo-alt-fill text-white fs-4 mt-1"></i>
+                            <div>
+                                <div class="text-uppercase fw-bold text-white small">Офис и сервизна база</div>
+                                <div style="color: #E2E4E8;">бул. Цариградско шосе 140, София 1784, България</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-telephone-fill text-white fs-4 mt-1"></i>
+                            <div>
+                                <div class="text-uppercase fw-bold text-white small">Стационарен телефон</div>
+                                <div><a href="tel:+35929001234" class="text-white text-decoration-none fw-bold fs-5">+359 2 900 1234</a></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-phone-fill text-white fs-4 mt-1"></i>
+                            <div>
+                                <div class="text-uppercase fw-bold text-white small">Дежурен инженерен екип / Hotline</div>
+                                <div><a href="tel:+359888123456" class="text-white text-decoration-none fw-bold fs-5">+359 888 123 456</a></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-envelope-fill text-white fs-4 mt-1"></i>
+                            <div>
+                                <div class="text-uppercase fw-bold text-white small">Имейл за запитвания</div>
+                                <div><a href="mailto:office@tjkdelta.bg" class="text-white text-decoration-none fw-bold">office@tjkdelta.bg</a></div>
+                                <div class="small" style="color: #B3B7BD;">Сервиз: service@tjkdelta.bg</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="bi bi-clock-fill text-white fs-4 mt-1"></i>
+                            <div>
+                                <div class="text-uppercase fw-bold text-white small">Работно време</div>
+                                <div style="color: #E2E4E8;">Понеделник – Петък: 08:30 – 17:30 ч.</div>
+                                <div class="small" style="color: #B3B7BD;">Събота и неделя: Дежурен сервизен екип</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 border border-secondary border-opacity-25" style="background-color: var(--tjk-surface);">
+                        <div class="small fw-bold text-uppercase text-white mb-1"><i class="bi bi-info-circle me-1"></i> Консултация на място</div>
+                        <p class="small mb-0" style="color: #D1D5DB;">
+                            Предлагаме оглед на място в арматурни дворове и заводи в цяла България с изготвяне на проект за разположение на оборудването.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inquiry Form Column -->
+            <div class="col-lg-7">
                 @if (Model.SubmittedSuccessfully)
                 {
-                    <div class="p-4 mb-4" style="background-color: var(--tjk-surface); border-left: 4px solid var(--tjk-accent) !important;">
-                        <h4 class="fw-bold text-uppercase text-white mb-2"><i class="bi bi-check2-circle text-danger me-2"></i>Запитването е изпратено успешно</h4>
-                        <p class="mb-0 text-white-50">Благодарим ви! Нашият екип ще се свърже с вас възможно най-скоро.</p>
+                    <div class="p-4 mb-4 border border-white" style="background-color: var(--tjk-surface-card);">
+                        <h4 class="fw-bold text-uppercase text-white mb-2"><i class="bi bi-check2-circle text-white me-2"></i>Запитването е изпратено успешно</h4>
+                        <p class="mb-0" style="color: #E2E4E8;">Благодарим ви! Нашият екип ще се свърже с вас в рамките на работния ден с търговска оферта и параметри.</p>
                     </div>
                 }
 
-                <div class="p-4 p-md-5" style="background-color: var(--tjk-surface);">
-                    <h3 class="h4 fw-bold text-uppercase text-white mb-2">ИЗПРАТЕТЕ ЗАПИТВАНЕ</h3>
-                    <p class="text-muted small mb-4">
-                        Попълнете формата по-долу за информация за конкретен модел машина, технически параметри или оферта.
+                <div class="p-4 p-md-5" style="background-color: var(--tjk-surface-card);">
+                    <h3 class="h4 fw-bold text-uppercase text-white mb-2">ИЗПРАТЕТЕ ЗАПИТВАНЕ ЗА ОФЕРТА</h3>
+                    <p class="small mb-4" style="color: #D1D5DB;">
+                        Попълнете полетата по-долу. Можете да посочите конкретен модел или желания производствен капацитет.
                     </p>
 
                     <form asp-controller="Home" asp-action="Contact" method="post">
@@ -39,25 +99,31 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label asp-for="Company" class="form-label small text-uppercase fw-bold text-white">Фирма / Организация</label>
+                                <input asp-for="Company" class="form-control tjk-form-control" placeholder="Име на компанията" />
+                                <span asp-validation-for="Company" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label asp-for="Email" class="form-label small text-uppercase fw-bold text-white">Имейл адрес *</label>
-                                <input asp-for="Email" type="email" class="form-control tjk-form-control" placeholder="name@company.com" required />
+                                <input asp-for="Email" type="email" class="form-control tjk-form-control" placeholder="office@company.bg" required />
                                 <span asp-validation-for="Email" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Phone" class="form-label small text-uppercase fw-bold text-white">Телефон за връзка *</label>
-                                <input asp-for="Phone" class="form-control tjk-form-control" placeholder="+359 ..." required />
+                                <label asp-for="Phone" class="form-label small text-uppercase fw-bold text-white">Телефон за контакт *</label>
+                                <input asp-for="Phone" class="form-control tjk-form-control" placeholder="+359 88 ..." required />
                                 <span asp-validation-for="Phone" class="text-danger small"></span>
                             </div>
 
-                            <div class="col-md-6">
-                                <label asp-for="SelectedProduct" class="form-label small text-uppercase fw-bold text-white">Модел или вид машина</label>
-                                <input asp-for="SelectedProduct" class="form-control tjk-form-control" placeholder="Напр. WG12, Shear Line, Робот..." />
+                            <div class="col-12">
+                                <label asp-for="SelectedProduct" class="form-label small text-uppercase fw-bold text-white">Модел машина или вид технология</label>
+                                <input asp-for="SelectedProduct" class="form-control tjk-form-control" placeholder="Напр. WG12, Shear Line 150B, Линия за кошове..." />
                             </div>
 
                             <div class="col-12">
-                                <label asp-for="Message" class="form-label small text-uppercase fw-bold text-white">Вашето съобщение *</label>
-                                <textarea asp-for="Message" rows="5" class="form-control tjk-form-control" placeholder="Опишете вашите изисквания, нужни капацитети или въпроси..." required></textarea>
+                                <label asp-for="Message" class="form-label small text-uppercase fw-bold text-white">Описание на запитването *</label>
+                                <textarea asp-for="Message" rows="5" class="form-control tjk-form-control" placeholder="Опишете вашите нужди (напр. обработвани диаметри арматура, капацитет тона/ден, срок на доставка)..." required></textarea>
                                 <span asp-validation-for="Message" class="text-danger small"></span>
                             </div>
 

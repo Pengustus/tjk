@@ -1,0 +1,155 @@
+@model tjk.Models.MachineFormViewModel
+@{
+    bool isEdit = !string.IsNullOrEmpty(Model.Id);
+    ViewData["Title"] = isEdit ? $"Редакция на {Model.Name}" : "Добавяне на нова машина / Оферта";
+    var categories = ViewBag.Categories as List<tjk.Models.CategoryItem> ?? new();
+}
+
+<div class="tjk-page-header">
+    <div class="container-fluid px-lg-5">
+        <div class="tjk-eyebrow">АДМИНИСТРАТИВЕН ПАНЕЛ</div>
+        <h1 class="display-6 fw-bold text-uppercase mb-0">
+            @(isEdit ? $"РЕДАКЦИЯ: {Model.Name}" : "ДОБАВЯНЕ НА НОВА МАШИНА / ОФЕРТА")
+        </h1>
+    </div>
+</div>
+
+<div class="tjk-section">
+    <div class="container-fluid px-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="p-4 p-md-5" style="background-color: var(--tjk-surface-card);">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                        <h4 class="fw-bold text-uppercase text-white mb-0">
+                            <i class="bi bi-cpu me-2"></i>Параметри на оборудването
+                        </h4>
+                        <a asp-controller="Admin" asp-action="Machines" class="btn-tjk-outline btn-sm">
+                            <i class="bi bi-arrow-left me-1"></i> НАЗАД КЪМ СПИСЪКА
+                        </a>
+                    </div>
+
+                    <form asp-controller="Admin" asp-action="@(isEdit ? "EditMachine" : "CreateMachine")" asp-route-id="@(isEdit ? Model.Id : null)" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        @if (isEdit)
+                        {
+                            <input type="hidden" asp-for="Id" />
+                        }
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-0 mb-4"></div>
+
+                        <!-- Basic Info Row -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-7">
+                                <label asp-for="Name" class="form-label small text-uppercase fw-bold text-white">Име на модела *</label>
+                                <input asp-for="Name" class="form-control tjk-form-control" placeholder="Напр. TJK WG12 Автоматична стремежова машина" required />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label asp-for="Slug" class="form-label small text-uppercase fw-bold text-white">URL адрес (Slug)</label>
+                                <input asp-for="Slug" class="form-control tjk-form-control" placeholder="напр. wg-12-estribadora (оставете празно за автоматично)" />
+                                <span asp-validation-for="Slug" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Category & Badge Row -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="CategoryId" class="form-label small text-uppercase fw-bold text-white">Категория на машината *</label>
+                                <select asp-for="CategoryId" class="form-select tjk-form-control" required>
+                                    <option value="">-- Изберете категория --</option>
+                                    @foreach (var cat in categories)
+                                    {
+                                        <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id)">@cat.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Badge" class="form-label small text-uppercase fw-bold text-white">Етикет / Бадж (опционално)</label>
+                                <input asp-for="Badge" id="badgeInput" class="form-control tjk-form-control" placeholder="Напр. ОКАЗИОН, ТОП МОДЕЛ, НА СКЛАД..." />
+                                <div class="d-flex gap-2 mt-2">
+                                    <button type="button" class="btn btn-dark btn-sm rounded-0 border-secondary border-opacity-50 text-white" style="font-size: 0.72rem;" onclick="document.getElementById('badgeInput').value = 'ОКАЗИОН';">ОКАЗИОН</button>
+                                    <button type="button" class="btn btn-dark btn-sm rounded-0 border-secondary border-opacity-50 text-white" style="font-size: 0.72rem;" onclick="document.getElementById('badgeInput').value = 'НА СКЛАД';">НА СКЛАД</button>
+                                    <button type="button" class="btn btn-dark btn-sm rounded-0 border-secondary border-opacity-50 text-white" style="font-size: 0.72rem;" onclick="document.getElementById('badgeInput').value = 'ТОП МОДЕЛ';">ТОП МОДЕЛ</button>
+                                    <button type="button" class="btn btn-dark btn-sm rounded-0 border-secondary border-opacity-50 text-white" style="font-size: 0.72rem;" onclick="document.getElementById('badgeInput').value = 'НОВА ОФЕРТА';">НОВА ОФЕРТА</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image & Featured Row -->
+                        <div class="row g-4 mb-4 align-items-center">
+                            <div class="col-md-6">
+                                <label asp-for="ImageUrl" class="form-label small text-uppercase fw-bold text-white">URL адрес на изображение</label>
+                                <input asp-for="ImageUrl" id="imageUrlInput" class="form-control tjk-form-control" placeholder="https://..." oninput="document.getElementById('imagePreview').src = this.value;" />
+                                <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ImageUpload" class="form-label small text-uppercase fw-bold text-white">Или качете файл от компютъра</label>
+                                <input asp-for="ImageUpload" class="form-control tjk-form-control" type="file" accept="image/*" />
+                                <span asp-validation-for="ImageUpload" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input asp-for="IsFeatured" class="form-check-input rounded-0" type="checkbox" id="isFeaturedCheck" style="cursor: pointer;" />
+                                <label class="form-check-label text-white fw-bold small text-uppercase" for="isFeaturedCheck" style="cursor: pointer;">
+                                    <i class="bi bi-star-fill text-white me-1"></i> Избран модел (Начална страница)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Image Live Preview -->
+                        <div class="mb-4 p-3 border border-secondary border-opacity-25" style="background-color: var(--tjk-surface);">
+                            <div class="small fw-bold text-uppercase text-muted mb-2">Преглед на снимката:</div>
+                            <img id="imagePreview" src="@Model.ImageUrl" alt="Preview" style="max-height: 180px; width: auto; object-fit: cover; border: 1px solid var(--tjk-border);" onerror="this.src='https://placehold.co/660x440/111/fff?text=Снимка+на+машина';" />
+                        </div>
+
+                        <!-- Descriptions Row -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-12">
+                                <label asp-for="ShortDescription" class="form-label small text-uppercase fw-bold text-white">Кратко описание (за списъка в каталога) *</label>
+                                <textarea asp-for="ShortDescription" rows="2" class="form-control tjk-form-control" placeholder="Едно или две изречения с основните възможности на машината..." required></textarea>
+                                <span asp-validation-for="ShortDescription" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="FullDescription" class="form-label small text-uppercase fw-bold text-white">Пълно описание (за детайлната страница) *</label>
+                                <textarea asp-for="FullDescription" rows="4" class="form-control tjk-form-control" placeholder="Подробно описание на оборудването, предназначението и автоматизацията..." required></textarea>
+                                <span asp-validation-for="FullDescription" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Features & Specs Row -->
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <label asp-for="FeaturesText" class="form-label small text-uppercase fw-bold text-white">Ключови характеристики</label>
+                                <div class="small text-muted mb-2">Въвеждайте по една характеристика на нов ред:</div>
+                                <textarea asp-for="FeaturesText" rows="6" class="form-control tjk-form-control" placeholder="Обработка на нишка до Ø14 mm&#10;Скорост до 120 м/мин&#10;Интуитивен CNC панел"></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="SpecificationsText" class="form-label small text-uppercase fw-bold text-white">Технически данни (Спецификации)</label>
+                                <div class="small text-muted mb-2">Формат: <code>Параметър: Стойност</code> (по един на ред):</div>
+                                <textarea asp-for="SpecificationsText" rows="6" class="form-control tjk-form-control" placeholder="Диаметър: Ø5 - 12 mm&#10;Скорост: 110 м/мин&#10;Точност: ±1 mm&#10;Мощност: 26 kW"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-3 pt-3 border-top border-secondary border-opacity-25">
+                            <button type="submit" class="btn-tjk-primary py-3 px-5">
+                                <i class="bi bi-check-lg me-1"></i> @(isEdit ? "ЗАПАЗИ ПРОМЕНИТЕ" : "ДОБАВИ МАШИНАТА")
+                            </button>
+                            <a asp-controller="Admin" asp-action="Machines" class="btn-tjk-outline py-3 px-4">
+                                ОТКАЗ
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

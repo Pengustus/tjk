@@ -20,12 +20,12 @@
                 <div class="p-4" style="background-color: var(--tjk-surface-card);">
                     <h5 class="text-uppercase fw-bold mb-3 pb-2 border-bottom border-secondary border-opacity-25">КАТЕГОРИИ</h5>
                     <div class="d-flex flex-column gap-2">
-                        <a asp-controller="Home" asp-action="Products" class="p-2 text-uppercase fw-bold small text-decoration-none @(string.IsNullOrEmpty(selectedSlug) ? "bg-white text-black" : "text-white")" style="@(string.IsNullOrEmpty(selectedSlug) ? "" : "background-color: var(--tjk-surface);")">
+                        <a asp-controller="Home" asp-action="Products" class="tjk-category-pill @(string.IsNullOrEmpty(selectedSlug) ? "tjk-category-pill-active" : "")">
                             ВСИЧКИ КАТЕГОРИИ
                         </a>
                         @foreach (var cat in categories)
                         {
-                            <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="p-2 text-uppercase fw-bold small text-decoration-none @(selectedSlug == cat.Slug ? "bg-white text-black" : "text-white")" style="@(selectedSlug == cat.Slug ? "" : "background-color: var(--tjk-surface);")">
+                            <a asp-controller="Home" asp-action="Products" asp-route-category="@cat.Slug" class="tjk-category-pill @(selectedSlug == cat.Slug ? "tjk-category-pill-active" : "")">
                                 @cat.Name
                             </a>
                         }
@@ -33,7 +33,7 @@
 
                     <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
                         <div class="fw-bold text-uppercase small mb-2 text-white">ИМАТЕ ВЪПРОС?</div>
-                        <p class="text-muted small mb-3">Изпратете запитване за технически спецификации и консултация.</p>
+                        <p class="small mb-3" style="color: #D1D5DB;">Изпратете запитване за технически спецификации и консултация.</p>
                         <a asp-controller="Home" asp-action="Contact" class="btn-tjk-outline w-100 justify-content-center">
                             ЗАПИТВАНЕ
                         </a>
@@ -73,15 +73,15 @@
                                             @prod.Name
                                         </a>
                                     </h3>
-                                    <p class="text-muted small mb-3 flex-grow-1">@prod.ShortDescription</p>
+                                    <p class="small mb-3 flex-grow-1" style="color: #D1D5DB;">@prod.ShortDescription</p>
 
                                     @if (prod.Specifications.Any())
                                     {
                                         <div class="p-2 mb-3 small" style="background-color: var(--tjk-surface);">
                                             @foreach (var spec in prod.Specifications.Take(2))
                                             {
-                                                <div class="d-flex justify-content-between text-muted py-1 border-bottom border-secondary border-opacity-10">
-                                                    <span class="text-uppercase fw-bold text-white-50" style="font-size: 0.78rem;">@spec.Key:</span>
+                                                <div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-10">
+                                                    <span class="text-uppercase fw-bold" style="font-size: 0.78rem; color: #B3B7BD;">@spec.Key:</span>
                                                     <span class="text-white fw-bold">@spec.Value</span>
                                                 </div>
                                             }

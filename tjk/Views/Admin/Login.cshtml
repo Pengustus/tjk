@@ -1,0 +1,70 @@
+@model tjk.Models.AdminLoginViewModel
+@{
+    ViewData["Title"] = "Вход за администратори";
+}
+
+<div class="tjk-section" style="min-height: 75vh; display: flex; align-items: center;">
+    <div class="container" style="max-width: 480px;">
+        <div class="p-4 p-md-5" style="background-color: var(--tjk-surface-card);">
+            <div class="text-center mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                <div class="tjk-eyebrow">TJK DELTA</div>
+                <h1 class="h3 fw-bold text-uppercase text-white mb-1">
+                    <i class="bi bi-shield-lock me-2"></i>Административен панел
+                </h1>
+                <p class="small text-muted mb-0">Въведете идентификационни данни за достъп</p>
+            </div>
+
+            <form asp-controller="Admin" asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="ReturnUrl" />
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-0 mb-4 py-2 small"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label small text-uppercase fw-bold text-white">
+                        Потребителско име
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text rounded-0 bg-black text-white border-secondary border-opacity-50">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input asp-for="Username" class="form-control tjk-form-control" placeholder="admin" autofocus required />
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Password" class="form-label small text-uppercase fw-bold text-white">
+                        Парола
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text rounded-0 bg-black text-white border-secondary border-opacity-50">
+                            <i class="bi bi-key"></i>
+                        </span>
+                        <input asp-for="Password" class="form-control tjk-form-control" type="password" placeholder="••••••••" required />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input rounded-0" type="checkbox" asp-for="RememberMe" id="rememberMeCheck" />
+                        <label class="form-check-label small text-white" for="rememberMeCheck">
+                            Запомни ме за 14 дни
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-tjk-primary w-100 justify-content-center py-2 mb-3">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> ВХОД В ПАНЕЛА
+                </button>
+
+                <div class="text-center pt-3 border-top border-secondary border-opacity-25">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none small text-white-50">
+                        <i class="bi bi-arrow-left me-1"></i> Обратно към публичния сайт
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

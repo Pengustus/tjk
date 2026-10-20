@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="bg" data-bs-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -55,7 +55,16 @@
                         </li>
                     </ul>
 
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-controller="Admin" asp-action="Inquiries" class="btn btn-sm btn-outline-light rounded-0 text-uppercase fw-bold" style="font-size: 0.75rem;">
+                                <i class="bi bi-shield-check me-1"></i>Админ CRM
+                            </a>
+                            <a asp-controller="Admin" asp-action="Logout" class="btn btn-sm btn-outline-danger rounded-0" style="font-size: 0.75rem;" title="Изход">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </a>
+                        }
                         <a asp-controller="Home" asp-action="Contact" class="btn-tjk-primary">
                             ЗАПИТВАНЕ
                         </a>
@@ -74,11 +83,11 @@
     <footer class="tjk-footer">
         <div class="container-fluid px-lg-5">
             <div class="row g-4 mb-4">
-                <div class="col-lg-5 col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <a asp-controller="Home" asp-action="Index" class="d-inline-block mb-3">
                         <img src="~/images/logo-white.png" alt="TJK Delta" class="tjk-footer-logo-img" />
                     </a>
-                    <p class="text-white-50 pe-lg-5 small mb-0">
+                    <p class="tjk-footer-desc pe-lg-4 small mb-0">
                         Индустриални машини за арматурни дворове и заводи за префaбрициран бетон. Автоматизирани системи за огъване, рязане и заваряване.
                     </p>
                 </div>
@@ -94,22 +103,45 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="text-uppercase text-white mb-3">Връзка с нас</h5>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-uppercase text-white mb-3">Навигация</h5>
                     <ul class="tjk-footer-links">
-                        <li><a asp-controller="Home" asp-action="Contact">Изпрати запитване</a></li>
-                        <li><a asp-controller="Home" asp-action="Services">Сервиз и поддръжка</a></li>
+                        <li><a asp-controller="Home" asp-action="Index">Начало</a></li>
+                        <li><a asp-controller="Home" asp-action="Products">Машини</a></li>
+                        <li><a asp-controller="Home" asp-action="Services">Услуги</a></li>
                         <li><a asp-controller="Home" asp-action="About">За TJK Delta</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Контакти</a></li>
                     </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-uppercase text-white mb-3">Контакти</h5>
+                    <div class="d-flex flex-column gap-2 small tjk-footer-contact">
+                        <div><i class="bi bi-geo-alt-fill me-2 text-white"></i>бул. Цариградско шосе 140, София</div>
+                        <div><i class="bi bi-telephone-fill me-2 text-white"></i><a href="tel:+35929001234" class="text-white text-decoration-none">+359 2 900 1234</a></div>
+                        <div><i class="bi bi-phone-fill me-2 text-white"></i><a href="tel:+359888123456" class="text-white text-decoration-none">+359 888 123 456</a></div>
+                        <div><i class="bi bi-envelope-fill me-2 text-white"></i><a href="mailto:office@tjkdelta.bg" class="text-white text-decoration-none">office@tjkdelta.bg</a></div>
+                        <div><i class="bi bi-clock-fill me-2 text-white"></i>Пн - Пт: 08:30 - 17:30 ч.</div>
+                    </div>
                 </div>
             </div>
 
             <div class="tjk-footer-bottom d-flex flex-wrap justify-content-between align-items-center pt-3 mt-4">
-                <div class="small text-white-50">
-                    &copy; @DateTime.Now.Year TJK DELTA. ВСИЧКИ ПРАВА ЗАПАЗЕНИ.
+                <div class="small tjk-copyright">
+                    &copy; @DateTime.Now.Year TJK DELTA BULGARIA. ВСИЧКИ ПРАВА ЗАПАЗЕНИ.
                 </div>
-                <div class="d-flex gap-3 small mt-2 mt-md-0">
-                    <a asp-controller="Home" asp-action="Contact" class="text-white-50 text-decoration-none">Контакти</a>
+                <div class="d-flex gap-4 small mt-2 mt-md-0 align-items-center">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Admin" asp-action="Inquiries" class="tjk-legal-link"><i class="bi bi-shield-check me-1"></i>Админ (@User.Identity.Name)</a>
+                        <a asp-controller="Admin" asp-action="Logout" class="tjk-legal-link text-danger"><i class="bi bi-box-arrow-right me-1"></i>Изход</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Admin" asp-action="Login" class="tjk-legal-link"><i class="bi bi-shield-lock me-1"></i>Вход Администратор</a>
+                    }
+                    <a asp-controller="Home" asp-action="Privacy" class="tjk-legal-link">Политика за поверителност</a>
+                    <a asp-controller="Home" asp-action="Contact" class="tjk-legal-link">Контакти</a>
                 </div>
             </div>
         </div>

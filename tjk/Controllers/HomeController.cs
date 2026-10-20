@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using tjk.Data;
 using tjk.Models;
 using tjk.Services;
 
@@ -9,11 +10,13 @@ namespace tjk.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
+        private readonly AppDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        public HomeController(ILogger<HomeController> logger, IProductService productService, AppDbContext dbContext)
         {
             _logger = logger;
             _productService = productService;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
@@ -88,21 +91,95 @@ namespace tjk.Controllers
         [Route("contact")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Contact(ContactFormViewModel model)
+        public async Task<IActionResult> Contact(ContactFormViewModel model)
         {
             ViewData["Title"] = "Контакти";
             if (ModelState.IsValid)
             {
-                model.SubmittedSuccessfully = true;
-                _logger.LogInformation("Contact request submitted by {Name} ({Email}) for product '{Product}'", model.Name, model.Email, model.SelectedProduct);
+                try
+                {
+                    var inquiry = new Inquiry
+                    {
+                        Name = model.Name,
+                        Company = model.Company,
+                        Email = model.Email,
+                        Phone = model.Phone,
+                        SelectedProduct = model.SelectedProduct,
+                        Message = model.Message,
+                        CreatedAt = DateTime.UtcNow,
+                        Status = "Ново",
+                        IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+                    };
+
+                    _dbContext.Inquiries.Add(inquiry);
+                    await _dbContext.SaveChangesAsync();
+
+                    model.SubmittedSuccessfully = true;
+                    _logger.LogInformation("Contact request #{Id} submitted by {Name} ({Email}) for product '{Product}'",
+                        inquiry.Id, model.Name, model.Email, model.SelectedProduct);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to save inquiry to database for {Email}", model.Email);
+                    ModelState.AddModelError(string.Empty, "Възникна временна грешка при обработката на запитването. Моля, опитайте отново или се свържете с нас директно по телефон.");
+                }
             }
             return View(model);
         }
 
+        [Route("privacy")]
         public IActionResult Privacy()
         {
             ViewData["Title"] = "Политика за поверителност";
             return View();
+        }
+
+        [Route("sitemap.xml")]
+        [ResponseCache(Duration = 3600)]
+        public IActionResult Sitemap()
+        {
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var categories = _productService.GetCategories();
+            var products = _productService.GetProducts();
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            sb.AppendLine("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+            // Static pages
+            string[] staticUrls = { "", "products", "services", "about", "contact", "privacy" };
+            foreach (var rel in staticUrls)
+            {
+                var loc = string.IsNullOrEmpty(rel) ? baseUrl : $"{baseUrl}/{rel}";
+                sb.AppendLine("  <url>");
+                sb.AppendLine($"    <loc>{loc}</loc>");
+                sb.AppendLine("    <changefreq>weekly</changefreq>");
+                sb.AppendLine($"    <priority>{(string.IsNullOrEmpty(rel) ? "1.0" : "0.8")}</priority>");
+                sb.AppendLine("  </url>");
+            }
+
+            // Categories
+            foreach (var cat in categories)
+            {
+                sb.AppendLine("  <url>");
+                sb.AppendLine($"    <loc>{baseUrl}/products/{cat.Slug}</loc>");
+                sb.AppendLine("    <changefreq>weekly</changefreq>");
+                sb.AppendLine("    <priority>0.8</priority>");
+                sb.AppendLine("  </url>");
+            }
+
+            // Products
+            foreach (var prod in products)
+            {
+                sb.AppendLine("  <url>");
+                sb.AppendLine($"    <loc>{baseUrl}/product/{prod.Slug}</loc>");
+                sb.AppendLine("    <changefreq>weekly</changefreq>");
+                sb.AppendLine("    <priority>0.9</priority>");
+                sb.AppendLine("  </url>");
+            }
+
+            sb.AppendLine("</urlset>");
+            return Content(sb.ToString(), "application/xml", System.Text.Encoding.UTF8);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
